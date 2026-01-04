@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "QEvent",
+  description: "Event booking app",
 };
 
 export default function RootLayout({ children }) {
@@ -17,7 +18,9 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="light">
             <Header />
-            {children}
+             <SessionWrapper>
+              {children}
+            </SessionWrapper>
           </ThemeProvider>
         </body>
       </html>

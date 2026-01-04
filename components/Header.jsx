@@ -4,95 +4,78 @@ import "../app/globals.css";
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
 import { HomeIcon, PersonIcon } from "@radix-ui/react-icons";
 import { CgProfile } from "react-icons/cg";
 import { useSession, signIn, signOut } from "next-auth/react";
-
-import { FaRegHeart } from "react-icons/fa";
 import { TfiTicket } from "react-icons/tfi";
 
 const Header = () => {
-  const [session, setSession] = useState(false);
+  const { data: session } = useSession();
 
   return (
-    <nav className="drop-shadow-2xl flex items-center justify-between p-3 border-b border-slate-200 border-spacing-0 bg-slate-100 h-24">
-      <div className="hover-inverse flex items-center justify-center gap-2">
-        <Link
-          href={"#"}
-          className="text-3xl font-bold max-sm:text-2xl bg-gradient-to-r from-orange-400 to-teal-600 bg-clip-text text-transparent"
-        >
-          <Image
-            src={"/images/logo.png"}
-            alt="logo"
-            height={90} // Aspect ratio control
-            width={90} // Aspect ratio control
-            layout="responsive"
-            className="hover-inverse w-full h-auto max-w-[120px] max-h-[120px] py-4"
-          />
+    <nav className="drop-shadow-2xl flex items-center justify-between p-3 border-b bg-slate-100 h-24">
+      
+      {/* LOGO */}
+      <Link href="/events" className="relative w-[90px] h-[90px]">
+        <Image
+          src="/images/logo.png"
+          alt="Logo"
+          fill
+          className="object-contain"
+        />
+      </Link>
+
+      {/* NAV LINKS */}
+      <div className="flex items-center gap-6 font-semibold max-md:hidden">
+
+        <Link href="/" className="flex gap-2 items-center hover:text-primary">
+          <HomeIcon />
+          Home
         </Link>
+
+        <Link href="/events" className="flex gap-2 items-center hover:text-primary">
+          <CgProfile />
+          Events
+        </Link>
+
+        <Link href="/artists" className="flex gap-2 items-center hover:text-primary">
+          <PersonIcon />
+          Artists
+        </Link>
+
+        <Link href="/tags" className="flex gap-2 items-center hover:text-primary">
+          <TfiTicket />
+          Tags
+        </Link>
+
+        {/* SHOW ONLY WHEN LOGGED IN */}
+        {session && (
+          <Link
+            href="/create-event"
+            className="px-4 py-2 rounded-md bg-blue-600 text-white hover:opacity-80"
+          >
+            Create Event
+          </Link>
+        )}
       </div>
 
-      <div className="flex justify-center items-center gap-4">
-        <div className="flex items-center justify-center gap-5 font-semibold max-md:hidden">
-          <Link
-            href={"#"}
-            className="flex items-center justify-center gap-2 hover:text-primary hover:scale-105 hover:underline-offset-8 hover:underline transition-all"
+      {/* AUTH BUTTONS */}
+      <div>
+        {!session ? (
+          <button
+            onClick={() => signIn("google")}
+            className="bg-gradient-to-r from-orange-400 to-teal-600 text-white px-4 py-2 rounded-md font-medium hover:opacity-70"
           >
-            <div className="scale-110">
-              <HomeIcon />
-            </div>
-            <p>Home</p>
-          </Link>
-
-          <Link
-            href={"#"}
-            className="flex items-center justify-center gap-2 hover:text-primary hover:scale-105 hover:underline-offset-8 hover:underline transition-all"
+            Log in
+          </button>
+        ) : (
+          <button
+            onClick={() => signOut()}
+            className="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded-md font-medium hover:opacity-70"
           >
-            <div className="scale-110">
-              <CgProfile />
-            </div>
-            <p>Events</p>
-          </Link>
-
-          <Link
-            href={"#"}
-            className="flex items-center justify-center gap-2 hover:text-primary hover:scale-105 hover:underline-offset-8 hover:underline transition-all"
-          >
-            <div className="scale-110">
-              <PersonIcon />
-            </div>
-            <p>Artists</p>
-          </Link>
-
-          <Link
-            href={"#"}
-            className="flex items-center justify-center gap-2 hover:text-primary hover:scale-105 hover:underline-offset-8 hover:underline transition-all"
-          >
-            <div className="scale-110">
-              <TfiTicket />
-            </div>
-            <p>Tags</p>
-          </Link>
-
-          {session ? (
-            <button
-              onClick={() => {}}
-              className=" bg-gradient-to-r from-orange-400 to-teal-600 text-white px-4 py-2 rounded-md font-medium hover:opacity-70"
-            >
-              Logout
-            </button>
-          ) : null}
-          {!session ? (
-            <button
-              onClick={() => {}}
-              className=" bg-gradient-to-r from-orange-400 to-teal-600 text-white px-4 py-2 rounded-md font-medium hover:opacity-70"
-            >
-              Log in
-            </button>
-          ) : null}
-        </div>
-        <div className="flex justify-center items-center gap-4 max-sm:gap-1"></div>
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );
