@@ -8,7 +8,6 @@ const EVENTS_API = "https://qevent-backend.labs.crio.do/events";
 
 export default function EventsClient() {
   const searchParams = useSearchParams();
-
   const artist = searchParams.get("artist");
   const tag = searchParams.get("tag");
 
@@ -36,7 +35,7 @@ export default function EventsClient() {
           filteredEvents = filteredEvents.filter(
             (event) =>
               Array.isArray(event.tags) &&
-              event.tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
+              event.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
           );
         }
 
@@ -64,8 +63,8 @@ export default function EventsClient() {
       </h1>
 
       <div className="flex flex-wrap justify-center">
-        {events.length > 0 ? (
-          events.map((event) => (
+        {events.length ? (
+          events.map(event => (
             <EventCard key={event._id} eventData={event} />
           ))
         ) : (
