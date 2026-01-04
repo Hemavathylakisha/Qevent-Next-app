@@ -84,6 +84,8 @@
     
 //   );
 // }
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import EventsClient from "./EventsClient";
 
